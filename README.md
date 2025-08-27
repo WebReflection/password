@@ -1,5 +1,7 @@
 # @webreflection/password
 
+[![Coverage Status](https://coveralls.io/repos/github/WebReflection/password/badge.svg?branch=main)](https://coveralls.io/github/WebReflection/password?branch=main)
+
 A minimalistic *AES-CBC* and *PBKDF2* based encryption/decryption utility for both *Web* and *Servers*.
 
 ```js
