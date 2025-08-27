@@ -11,9 +11,9 @@ const {
   // global polyfills
   /* c8 ignore start */
   // @ts-ignore
-  atob = str => Buffer.from(str, 'base64').toString(),
+  atob = str => globalThis.Buffer.from(str, 'base64').toString(),
   // @ts-ignore
-  btoa = str => Buffer.from(str).toString('base64'),
+  btoa = str => globalThis.Buffer.from(str).toString('base64'),
   /* c8 ignore stop */
 } = globalThis;
 
