@@ -1,0 +1,44 @@
+{
+  "name": "@webreflection/password",
+  "type": "module",
+  "version": "0.0.0",
+  "description": "A minimalistic AES-CBC and PBKDF2 based encryption/decryption utility for both Web and Servers",
+  "main": "index.js",
+  "module": "index.js",
+  "license": "MIT",
+  "author": "Andrea Giammarchi",
+  "scripts": {
+    "build": "npm run types && npm run test",
+    "coverage": "mkdir -p ./coverage; c8 report --reporter=text-lcov > ./coverage/lcov.info",
+    "test": "c8 node ./test.js",
+    "types": "tsc --allowJs --checkJs --lib dom,esnext --module esnext --target esnext -d --emitDeclarationOnly ./index.js"
+  },
+  "exports": {
+    ".": "./index.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.d.ts",
+    "index.js",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "password",
+    "encryption",
+    "decryption"
+  ],
+  "devDependencies": {
+    "c8": "^10.1.3",
+    "typescript": "^5.9.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WebReflection/password.git"
+  },
+  "types": "./index.d.ts",
+  "bugs": {
+    "url": "https://github.com/WebReflection/password/issues"
+  },
+  "homepage": "https://github.com/WebReflection/password#readme"
+}
