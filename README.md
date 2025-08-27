@@ -2,6 +2,8 @@
 
 [![Coverage Status](https://coveralls.io/repos/github/WebReflection/password/badge.svg?branch=main)](https://coveralls.io/github/WebReflection/password?branch=main)
 
+<sup>**Social Media Photo by [Jaye Haych](https://unsplash.com/@jaye_haych) on [Unsplash](https://unsplash.com/)**</sup>
+
 A minimalistic *AES-CBC* and *PBKDF2* based encryption/decryption utility for both *Web* and *Servers*.
 
 ```js
