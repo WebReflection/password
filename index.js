@@ -49,17 +49,16 @@ const SHA = 256;
 
 /**
  * @param {IO} [password=crypto.randomUUID()]
- * @param {Uint8Array} [iv=new Uint8Array(16)]
+ * @param {Uint8Array} [shared_iv=new Uint8Array(16)]
  * @returns
  */
 export default (
   password = crypto.randomUUID(),
   // for secure one-off operations pass:
   // crypto.getRandomValues(new Uint8Array(16))
-  iv = new Uint8Array(16),
+  shared_iv = new Uint8Array(16),
 ) => {
   const salt = typeof password === 'string' ? encoder.encode(password) : password;
-  const details = { name: method, iv };
 
   // @ts-ignore
   const key = subtle.importKey(
@@ -86,12 +85,14 @@ export default (
     /**
      * @template {IO} T
      * @param {T} value
+     * @param {Uint8Array} [iv=shared_iv]
      * @returns {Promise<T extends string ? string : T extends ArrayBufferLike ? ArrayBufferLike : T extends ArrayBufferView ? ArrayBufferView : never>}
      */
-    encrypt: async value => {
+    encrypt: async (value, iv = shared_iv) => {
       const asString = typeof value === 'string';
       const encrypted = await subtle.encrypt(
-        details,
+        // @ts-ignore
+        { name: method, iv },
         await key,
         // @ts-ignore
         asString ? encoder.encode(value) : value,
@@ -103,12 +104,14 @@ export default (
     /**
      * @template {IO} T
      * @param {T} value
+     * @param {Uint8Array} [iv=shared_iv]
      * @returns {Promise<T extends string ? string : T extends ArrayBufferLike ? ArrayBufferLike : T extends ArrayBufferView ? ArrayBufferView : never>}
      */
-    decrypt: async value => {
+    decrypt: async (value, iv = shared_iv) => {
       const asString = typeof value === 'string';
       const decrypted = await subtle.decrypt(
-        details,
+        // @ts-ignore
+        { name: method, iv },
         await key,
         // @ts-ignore
         asString ? decode(value) : value
