@@ -23,6 +23,7 @@ const caller = call.bind(call);
 const asTyped = (_, $) => isView(_) ? new _.constructor($) : $;
 const asCharCode = c => caller(charCodeAt, c, 0);
 const bound = (_, $) => _[$].bind(_);
+const when = (value, after) => caller(then, value, after);
 
 // encode/decode
 const decode = chars => ui8aFrom(atob(chars), asCharCode);
@@ -57,8 +58,7 @@ export default (
   const { resolve, promise } = withResolvers();
   let key;
 
-  caller(
-    then,
+  when(
     importKey(
       'raw',
       salt,
@@ -66,60 +66,49 @@ export default (
       false,
       ['deriveBits', 'deriveKey']
     ),
-    _ => {
-      caller(
-        then,
-        deriveKey(
-          {
-            name,
-            salt,
-            iterations,
-            hash: `SHA-${SHA}`
-          },
-          _,
-          { name: method, length: SHA },
-          true,
-          ['encrypt', 'decrypt']
-        ),
-        _ => {
-          key = _;
-          resolve();
+    importedKey => when(
+      deriveKey(
+        {
+          name,
+          salt,
+          iterations,
+          hash: `SHA-${SHA}`
         },
-      );
-    },
+        importedKey,
+        { name: method, length: SHA },
+        true,
+        ['encrypt', 'decrypt']
+      ),
+      derivedKey => {
+        key = derivedKey;
+        resolve();
+      },
+    ),
   );
 
   return freeze({
-    encrypt(value, iv = shared_iv) {
-      return caller(
-        then,
-        promise,
-        (asString = typeof value === 'string') => caller(
-          then,
-          encrypt(
-            { name: method, iv },
-            key,
-            asString ? encoder(value) : value,
-          ),
-          encrypted => asString ? encode(encrypted) : asTyped(value, encrypted),
+    encrypt: (value, iv = shared_iv) => when(
+      promise,
+      (asString = typeof value === 'string') => when(
+        encrypt(
+          { name: method, iv },
+          key,
+          asString ? encoder(value) : value,
         ),
-      );
-    },
+        encrypted => asString ? encode(encrypted) : asTyped(value, encrypted),
+      ),
+    ),
 
-    decrypt(value, iv = shared_iv) {
-      return caller(
-        then,
-        promise,
-        (asString = typeof value === 'string') => caller(
-          then,
-          decrypt(
-            { name: method, iv },
-            key,
-            asString ? decode(value) : value,
-          ),
-          decrypted => asString ? decoder(decrypted) : asTyped(value, decrypted),
+    decrypt: (value, iv = shared_iv) => when(
+      promise,
+      (asString = typeof value === 'string') => when(
+        decrypt(
+          { name: method, iv },
+          key,
+          asString ? decode(value) : value,
         ),
-      );
-    },
+        decrypted => asString ? decoder(decrypted) : asTyped(value, decrypted),
+      ),
+    ),
   });
 };
