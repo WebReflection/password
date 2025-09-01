@@ -14,7 +14,14 @@
     "types": "tsc --allowJs --checkJs --lib dom,esnext --module esnext --target esnext -d --emitDeclarationOnly ./index.js"
   },
   "exports": {
-    ".": "./index.js",
+    ".": {
+      "import": "./index.js",
+      "types": "./index.d.ts"
+    },
+    "./sealed": {
+      "import": "./sealed.js",
+      "types": "./index.d.ts"
+    },
     "./package.json": "./package.json"
   },
   "files": [

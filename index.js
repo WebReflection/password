@@ -88,7 +88,7 @@ export default (
      * @param {Uint8Array} [iv=shared_iv]
      * @returns {Promise<T extends string ? string : T extends ArrayBufferLike ? ArrayBufferLike : T extends ArrayBufferView ? ArrayBufferView : never>}
      */
-    encrypt: async (value, iv = shared_iv) => {
+    async encrypt(value, iv = shared_iv) {
       const asString = typeof value === 'string';
       const encrypted = await subtle.encrypt(
         // @ts-ignore
@@ -107,7 +107,7 @@ export default (
      * @param {Uint8Array} [iv=shared_iv]
      * @returns {Promise<T extends string ? string : T extends ArrayBufferLike ? ArrayBufferLike : T extends ArrayBufferView ? ArrayBufferView : never>}
      */
-    decrypt: async (value, iv = shared_iv) => {
+    async decrypt(value, iv = shared_iv) {
       const asString = typeof value === 'string';
       const decrypted = await subtle.decrypt(
         // @ts-ignore

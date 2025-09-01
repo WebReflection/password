@@ -30,3 +30,13 @@ The *input* and *output* of both `encrypt` and `decrypt` are symmetric:
   * if the passed *input* is `string`, a base 64 string is returned while encrypting, or the original string while decrypting (from that base 64 string)
   * if the passed *input* is `ArrayBuffer`, an `ArrayBuffer` is returned
   * if the passed *input* is a `Uint8Array`, a `Uint8Array` is returned
+
+### A Sealed Variant
+
+Identical in API and features yet more verbose due 100% frozen and sealed wrappers to guarantee that if this module is loaded before anything else it's almost impossible to intercept the *CryptoKey* or any other intermediate operation.
+
+```js
+import password from 'https://esm.run/@webreflection/password/sealed';
+```
+
+In short, this is a tad slower yet "*paranoia friendly*" variant of the very same module.
