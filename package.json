@@ -27,6 +27,7 @@
   "files": [
     "index.d.ts",
     "index.js",
+    "sealed.js",
     "README.md",
     "LICENSE"
   ],
