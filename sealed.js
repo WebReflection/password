@@ -3,45 +3,31 @@
 // ⚠️ watch out in NodeJS this practice is almost irrelevant
 //     due native leaks: https://github.com/nodejs/node/issues/59699
 
-const {
-  ArrayBuffer: { isView },
-  Function: { prototype: { apply, call } },
-  Object: { freeze },
-  Promise: { prototype: { then } },
-  String: { fromCharCode, prototype: { charCodeAt } },
+import {
   Uint8Array,
-  crypto: { subtle },
-  atob,
-  btoa,
-} = globalThis;
 
-// essential
-const applier = call.bind(apply);
-const caller = call.bind(call);
+  // helpers
+  asTyped,
+  when,
 
-// helpers
-const asTyped = (_, $) => isView(_) ? new _.constructor($) : $;
-const asCharCode = c => caller(charCodeAt, c, 0);
-const bound = (_, $) => _[$].bind(_);
-const when = (value, after) => caller(then, value, after);
+  // encode/decode
+  decode,
+  decoder,
+  encode,
+  encoder,
 
-// encode/decode
-const decode = chars => ui8aFrom(atob(chars), asCharCode);
-const decoder = bound(new TextDecoder, 'decode');
+  // trapped crypto
+  randomUUID,
+  importKey,
+  deriveKey,
+  encrypt,
+  decrypt,
 
-const encode = buffer => btoa(applier(fromCharCode, null, new Uint8Array(buffer)));
-const encoder = bound(new TextEncoder, 'encode');
+  // extras
+  withResolvers,
+} from './utils.js';
 
-// trapped crypto
-const randomUUID = bound(crypto, 'randomUUID');
-const importKey = bound(subtle, 'importKey');
-const deriveKey = bound(subtle, 'deriveKey');
-const encrypt = bound(subtle, 'encrypt');
-const decrypt = bound(subtle, 'decrypt');
-
-// extras
-const ui8aFrom = bound(Uint8Array, 'from');
-const withResolvers = bound(Promise, 'withResolvers');
+const { freeze } = Object;
 
 // encryption details
 const name = 'PBKDF2';

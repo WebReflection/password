@@ -22,6 +22,7 @@
       "import": "./sealed.js",
       "types": "./index.d.ts"
     },
+    "./utils": "./utils.js",
     "./package.json": "./package.json"
   },
   "files": [
