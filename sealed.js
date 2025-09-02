@@ -25,9 +25,8 @@ import {
 
   // extras
   withResolvers,
+  freeze,
 } from './utils.js';
-
-const { freeze } = Object;
 
 // encryption details
 const name = 'PBKDF2';

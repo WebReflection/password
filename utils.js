@@ -10,7 +10,7 @@ const {
   btoa,
 } = globalThis;
 
-export { isView, fromCharCode, charCodeAt, Uint8Array };
+export { isView, freeze, fromCharCode, charCodeAt, Uint8Array };
 
 // essential
 export const applier = call.bind(apply);
