@@ -29,6 +29,7 @@
     "index.d.ts",
     "index.js",
     "sealed.js",
+    "utils.js",
     "README.md",
     "LICENSE"
   ],
