@@ -26,7 +26,7 @@ export const when = (value, after) => caller(then, value, after);
 export const decode = chars => ui8aFrom(atob(chars), asCharCode);
 export const decoder = bound(new TextDecoder, 'decode');
 
-export const encode = buffer => btoa(applier(fromCharCode, null, new Uint8Array(buffer)));
+export const encode = buffer => btoa(applier(fromCharCode, null, isView(buffer) ? buffer : new Uint8Array(buffer)));
 export const encoder = bound(new TextEncoder, 'encode');
 
 // trapped crypto
