@@ -1,7 +1,7 @@
 {
   "name": "@webreflection/password",
   "type": "module",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "A minimalistic AES-CBC and PBKDF2 based encryption/decryption utility for both Web and Servers",
   "main": "index.js",
   "module": "index.js",
