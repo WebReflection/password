@@ -40,7 +40,7 @@ export default (
   shared_iv = new Uint8Array(16),
 ) => {
   const salt = typeof password === 'string' ? encoder(password) : password;
-  const { resolve, promise } = withResolvers();
+  const { promise: bootstrap, reject, resolve } = withResolvers();
   let key;
 
   when(
@@ -51,49 +51,73 @@ export default (
       false,
       ['deriveBits', 'deriveKey']
     ),
-    importedKey => when(
-      deriveKey(
-        {
-          name,
-          salt,
-          iterations,
-          hash: `SHA-${SHA}`
+    importedKey => {
+      when(
+        deriveKey(
+          {
+            name,
+            salt,
+            iterations,
+            hash: `SHA-${SHA}`
+          },
+          importedKey,
+          { name: method, length: SHA },
+          true,
+          ['encrypt', 'decrypt']
+        ),
+        derivedKey => {
+          key = derivedKey;
+          resolve();
         },
-        importedKey,
-        { name: method, length: SHA },
-        true,
-        ['encrypt', 'decrypt']
-      ),
-      derivedKey => {
-        key = derivedKey;
-        resolve();
-      },
-    ),
+        reject,
+      );
+    },
+    reject,
   );
 
   return freeze({
-    encrypt: (value, iv = shared_iv) => when(
-      promise,
-      (asString = typeof value === 'string') => when(
-        encrypt(
-          { name: method, iv },
-          key,
-          asString ? encoder(value) : value,
-        ),
-        encrypted => asString ? encode(encrypted) : asTyped(value, encrypted),
-      ),
-    ),
+    encrypt: (value, iv = shared_iv) => {
+      const { promise, reject, resolve } = withResolvers();
+      when(
+        bootstrap,
+        (asString = typeof value === 'string') => {
+          when(
+            encrypt(
+              { name: method, iv },
+              key,
+              asString ? encoder(value) : value,
+            ),
+            encrypted => {
+              resolve(asString ? encode(encrypted) : asTyped(value, encrypted));
+            },
+            reject,
+          );
+        },
+        reject,
+      );
+      return promise;
+    },
 
-    decrypt: (value, iv = shared_iv) => when(
-      promise,
-      (asString = typeof value === 'string') => when(
-        decrypt(
-          { name: method, iv },
-          key,
-          asString ? decode(value) : value,
-        ),
-        decrypted => asString ? decoder(decrypted) : asTyped(value, decrypted),
-      ),
-    ),
+    decrypt: (value, iv = shared_iv) => {
+      const { promise, reject, resolve } = withResolvers();
+      when(
+        bootstrap,
+        (asString = typeof value === 'string') => {
+          when(
+            decrypt(
+              { name: method, iv },
+              key,
+              asString ? decode(value) : value,
+            ),
+            decrypted => {
+              resolve(asString ? decoder(decrypted) : asTyped(value, decrypted));
+            },
+            reject,
+          );
+        },
+        reject,
+      );
+      return promise;
+    },
   });
 };

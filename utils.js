@@ -20,13 +20,13 @@ export const caller = call.bind(call);
 export const asTyped = (_, $) => isView(_) ? new _.constructor($) : $;
 export const asCharCode = c => caller(charCodeAt, c, 0);
 export const bound = (_, $) => _[$].bind(_);
-export const when = (value, after) => caller(then, value, after);
+export const when = (value, ok, ...err) => caller(then, value, ok, ...err);
 
 // encode/decode
 export const decode = chars => ui8aFrom(atob(chars), asCharCode);
 export const decoder = bound(new TextDecoder, 'decode');
 
-export const encode = buffer => btoa(applier(fromCharCode, null, isView(buffer) ? buffer : new Uint8Array(buffer)));
+export const encode = buffer => btoa(applier(fromCharCode, null, new Uint8Array(buffer)));
 export const encoder = bound(new TextEncoder, 'encode');
 
 // trapped crypto
