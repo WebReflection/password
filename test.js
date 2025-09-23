@@ -41,3 +41,29 @@ async function test(module, pollute) {
 
 await test('./index.js', false);
 await test('./sealed.js', true);
+
+const { getter, getset, setter } = await import('./utils.js');
+const m = new Map([['a', 1]]);
+console.assert(getter(m, 'size')() === 1, 'getter');
+
+class Accessors {
+  #size;
+  constructor(value = 0) {
+    this.#size = value;
+  }
+  get size() {
+    return this.#size;
+  }
+  set size(value) {
+    this.#size = value;
+  }
+}
+
+const a = new Accessors;
+console.assert(getter(a, 'size')() === 0);
+setter(a, 'size')(1);
+console.assert(getter(a, 'size')() === 1);
+const ags = getset(a, 'size');
+console.assert(ags.get() === 1);
+ags.set(2);
+console.assert(ags.get() === 2);
