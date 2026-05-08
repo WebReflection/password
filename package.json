@@ -1,6 +1,10 @@
 {
   "name": "@webreflection/password",
   "type": "module",
+  "types": {
+    "./index.js": "./index.d.ts",
+    "./sealed.js": "./index.d.ts"
+  },
   "version": "0.3.0",
   "description": "A minimalistic AES-CBC and PBKDF2 based encryption/decryption utility for both Web and Servers",
   "main": "index.js",
@@ -39,14 +43,13 @@
     "decryption"
   ],
   "devDependencies": {
-    "c8": "^10.1.3",
-    "typescript": "^5.9.2"
+    "c8": "^11.0.0",
+    "typescript": "^6.0.3"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/WebReflection/password.git"
   },
-  "types": "./index.d.ts",
   "bugs": {
     "url": "https://github.com/WebReflection/password/issues"
   },

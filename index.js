@@ -63,7 +63,7 @@ export default (
   // @ts-ignore
   const key = subtle.importKey(
     'raw',
-    salt,
+    /** @type {BufferSource} */(salt),
     { name },
     false,
     ['deriveBits', 'deriveKey']
