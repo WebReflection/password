@@ -5,7 +5,7 @@
     "./index.js": "./index.d.ts",
     "./sealed.js": "./index.d.ts"
   },
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A minimalistic AES-CBC and PBKDF2 based encryption/decryption utility for both Web and Servers",
   "main": "index.js",
   "module": "index.js",
