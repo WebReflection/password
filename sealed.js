@@ -1,7 +1,7 @@
 // 100% sealed module 🔒 - Browsers + Bun (Node leaks internally the crypto-key)
 // this grants zero leaks only if imported before anything else
-// ⚠️ watch out in NodeJS this practice is almost irrelevant
-//     due native leaks: https://github.com/nodejs/node/issues/59699
+// ⚠️ watch out in NodeJS < 26 this practice is almost irrelevant
+//    due native leaks: https://github.com/nodejs/node/issues/59699
 
 import {
   Uint8Array,

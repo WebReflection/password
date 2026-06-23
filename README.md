@@ -33,7 +33,7 @@ The *input* and *output* of both `encrypt` and `decrypt` are symmetric:
 
 ### A Sealed Variant
 
-Identical in API and features yet more verbose due 100% frozen and sealed wrappers to guarantee that if this module is loaded before anything else it's almost impossible to intercept the *CryptoKey* or any other intermediate operation.
+Identical in API and features yet more verbose due 100% frozen and sealed wrappers to guarantee that if this module is loaded before anything else it's impossible to intercept the *CryptoKey* or any other intermediate operation.
 
 ```js
 import password from 'https://esm.run/@webreflection/password/sealed';
